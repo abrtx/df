@@ -1,0 +1,140 @@
+#+TITLE: Pandas Dataframes
+#+DATE: 2024-04-20 Sat
+#+AUTHOR: abrtx
+
+* Python's Pandas Dataframes
+Data structure that are Two-dimentional, size-mutable, 
+tabular data representation.
+For more information:
+https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+
+* Why?
+Sometime We'll need to deal with data from some API where 
+that data representation isn't fit for some kind of process.
+Well, this is a formula that is possible fit well
+
+* How
+Its time for famous ETL process. 
+
+* Example
+** Extract
+Suppose we receive a list of dicts from the API for apply
+some taxes to a particular product. 
+
+#+BEGIN_SRC python
+
+data = [{'Product':'Bananas','Tax':1.3,'Price':1.2},
+        {'Product':'Cafe','Tax': 0.5,'Price':0.7},
+        {'Product':'Milk','Price':3.8,'Tax': 4.5}]
+
+#+END_SRC
+
+** Transform
+*** TO DF
+
+#+BEGIN_SRC python
+df = pd.DataFrame(data)
+#+END_SRC
+
+*** Tax apply
+
+#+BEGIN_SRC python
+
+def tax_apply(row):
+    
+    if row.name == 'Bananas':
+        row.Price = row.Price * row.Tax
+    return row
+
+df=df.set_index('Product')
+
+df.apply(tax_apply, axis='columns')
+
+#+END_SRC
+
+** Load
+
+*** Reset transformations
+
+#+BEGIN_SRC python
+
+df = df.reset_index()
+item = df.pop('Product')
+df.insert(0, 'Product', item)
+
+
+#+END_SRC
+
+*** Insert to a database 
+Sorry, but don't care this time
+
+* Code
+
+#+BEGIN_SRC python
+
+import pandas as pd
+
+data = [{'Product':'Bananas','Tax':1.3,'Price':1.2},
+        {'Product':'Cafe','Tax': 0.5,'Price':0.7},
+        {'Product':'Milk','Price':3.8,'Tax': 4.5}]
+
+df = pd.DataFrame(data)
+
+def tax_apply(row):
+    
+    if row.name == 'Bananas':
+        row.Price = row.Price * row.Tax
+    return row
+
+print(f'\ndf previous:\n {df}\n')
+
+df=df.set_index('Product')
+
+print(f'df set_index(tipo):\n {df}\n')
+
+df.apply(tax_apply, axis='columns')
+print(f'df :\n {df}\n')
+
+df = df.reset_index()
+item = df.pop('Product')
+df.insert(0, 'Product', item)
+
+print(f'df Transpose (df):\n {df}\n')
+
+#+END_SRC
+
+* Product
+#+BEGIN_SRC bash
+
+(dataframes) abrtx@abrtx-laptop:~/work/python/pd$ python test.py 
+
+df previous:
+    Product  Tax  Price
+0  Bananas  1.3    1.2
+1     Cafe  0.5    0.7
+2     Milk  4.5    3.8
+
+df set_index(tipo):
+          Tax  Price
+Product            
+Bananas  1.3    1.2
+Cafe     0.5    0.7
+Milk     4.5    3.8
+
+df :
+          Tax  Price
+Product            
+Bananas  1.3   1.56
+Cafe     0.5   0.70
+Milk     4.5   3.80
+
+df Transpose (df):
+    Product  Tax  Price
+0  Bananas  1.3   1.56
+1     Cafe  0.5   0.70
+2     Milk  4.5   3.80
+
+(dataframes) abrtx@abrtx-laptop:~/work/python/pd$ 
+
+#+END_SRC
+
