@@ -5,29 +5,38 @@ import pandas as pd
 #                    ['Milk', 0.7, 3.8]],
 #                   columns=['Item','Tax','Price'])
 
-df = pd.DataFrame([['Product','Bananas','Cafe', 'Milk'],
-                   ['Tax',1.3, 0.5, 4.5],
-                   ['Price',1.2, 0.7, 3.8]],
-                  columns=['Item','Item0','Item1','Item2'])
+# [['Product','Bananas','Cafe', 'Milk'],
+#                    ['Tax',1.3, 0.5, 4.5],
+#                    ['Price',1.2, 0.7, 3.8]]
+# data = [{'Product':'Bananas','Product':'Cafe','Product':'Milk'},
+#         {'Tax':1.3,'Tax': 0.5,'Tax': 4.5},
+#         {'Price':1.2,'Price':0.7,'Price':3.8}]
 
 
-def mapping(row):
+data = [{'Product':'Bananas','Tax':1.3,'Price':1.2},
+        {'Product':'Cafe','Tax': 0.5,'Price':0.7},
+        {'Product':'Milk','Price':3.8,'Tax': 4.5}]
+
+df = pd.DataFrame(data)
+
+
+def tax_apply(row):
     
-    if row.name == 'Item0':
-        row.Price = row.Price + row.Tax
+    if row.name == 'Bananas':
+        row.Price = row.Price * row.Tax
     return row
 
 print(f'\ndf previous:\n {df}\n')
 
-df=df.set_index('Item').T
+df=df.set_index('Product')
 
 print(f'df set_index(tipo):\n {df}\n')
 
-df.apply(mapping, axis='columns')
+df.apply(tax_apply, axis='columns')
 print(f'df :\n {df}\n')
-df = df.T
+# df = df.T
 df = df.reset_index()
-item = df.pop('Item')
-df.insert(0, 'Item', item)
+item = df.pop('Product')
+df.insert(0, 'Product', item)
 
 print(f'df Transpose (df):\n {df}\n')
