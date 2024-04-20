@@ -1,22 +1,23 @@
 
 # Table of Contents
 
-1.  [Python&rsquo;s Pandas Dataframes](#orgbe4da47)
-2.  [Why?](#orgdd65e09)
-3.  [How](#orgdd900d5)
-4.  [Example](#org4c70879)
-    1.  [Extract](#org4b191e5)
-    2.  [Transform](#orgecaa326)
-        1.  [TO DF](#org6fcf5b5)
-        2.  [Tax apply](#org8a41061)
-    3.  [Load](#orge085c37)
-        1.  [Reset transformations](#org50510bf)
-        2.  [Insert to a database](#orgcfd0fb0)
-5.  [Code](#org321f6a0)
+1.  [Python&rsquo;s Pandas Dataframes](#org229a88f)
+2.  [Why?](#org8b04431)
+3.  [How](#org4c56ec4)
+4.  [Example](#orgba714f5)
+    1.  [Extract](#orgfed3ae7)
+    2.  [Transform](#orgfad68d0)
+        1.  [TO DF](#org0543875)
+        2.  [Tax apply](#orgcd0a904)
+    3.  [Load](#org825b23e)
+        1.  [Reset transformations](#orgaff9917)
+        2.  [Insert to a database](#orgee9df8d)
+5.  [Code](#orgf240572)
+6.  [Product](#org5463cb2)
 
 
 
-<a id="orgbe4da47"></a>
+<a id="org229a88f"></a>
 
 # Python&rsquo;s Pandas Dataframes
 
@@ -26,7 +27,7 @@ For more information:
 <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>
 
 
-<a id="orgdd65e09"></a>
+<a id="org8b04431"></a>
 
 # Why?
 
@@ -35,19 +36,19 @@ that data representation isn&rsquo;t fit for some kind of process.
 Well, this is a formula that is possible fit well
 
 
-<a id="orgdd900d5"></a>
+<a id="org4c56ec4"></a>
 
 # How
 
 Its time for famous ETL process. 
 
 
-<a id="org4c70879"></a>
+<a id="orgba714f5"></a>
 
 # Example
 
 
-<a id="org4b191e5"></a>
+<a id="orgfed3ae7"></a>
 
 ## Extract
 
@@ -60,19 +61,19 @@ some taxes to a particular product.
     	{'Product':'Milk','Price':3.8,'Tax': 4.5}]
 
 
-<a id="orgecaa326"></a>
+<a id="orgfad68d0"></a>
 
 ## Transform
 
 
-<a id="org6fcf5b5"></a>
+<a id="org0543875"></a>
 
 ### TO DF
 
     df = pd.DataFrame(data)
 
 
-<a id="org8a41061"></a>
+<a id="orgcd0a904"></a>
 
 ### Tax apply
 
@@ -88,12 +89,12 @@ some taxes to a particular product.
     df.apply(tax_apply, axis='columns')
 
 
-<a id="orge085c37"></a>
+<a id="org825b23e"></a>
 
 ## Load
 
 
-<a id="org50510bf"></a>
+<a id="orgaff9917"></a>
 
 ### Reset transformations
 
@@ -103,14 +104,14 @@ some taxes to a particular product.
     df.insert(0, 'Product', item)
 
 
-<a id="orgcfd0fb0"></a>
+<a id="orgee9df8d"></a>
 
 ### Insert to a database
 
 Sorry, but don&rsquo;t care this time
 
 
-<a id="org321f6a0"></a>
+<a id="orgf240572"></a>
 
 # Code
 
@@ -143,4 +144,40 @@ Sorry, but don&rsquo;t care this time
     df.insert(0, 'Product', item)
     
     print(f'df Transpose (df):\n {df}\n')
+
+
+<a id="org5463cb2"></a>
+
+# Product
+
+    
+    (dataframes) abrtx@abrtx-laptop:~/work/python/pd$ python test.py 
+    
+    df previous:
+        Product  Tax  Price
+    0  Bananas  1.3    1.2
+    1     Cafe  0.5    0.7
+    2     Milk  4.5    3.8
+    
+    df set_index(tipo):
+    	  Tax  Price
+    Product            
+    Bananas  1.3    1.2
+    Cafe     0.5    0.7
+    Milk     4.5    3.8
+    
+    df :
+    	  Tax  Price
+    Product            
+    Bananas  1.3   1.56
+    Cafe     0.5   0.70
+    Milk     4.5   3.80
+    
+    df Transpose (df):
+        Product  Tax  Price
+    0  Bananas  1.3   1.56
+    1     Cafe  0.5   0.70
+    2     Milk  4.5   3.80
+    
+    (dataframes) abrtx@abrtx-laptop:~/work/python/pd$ 
 
